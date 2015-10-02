@@ -22,7 +22,6 @@ public class MainActivity extends AppCompatActivity {
     Button restartButton;
     TextView gameOverText;
     TextView levelText;
-    TextView shipsTouchedText;
     ArrayList<ImageButton> ships;
     ArrayList<ImageButton> aliens;
 
@@ -44,6 +43,8 @@ public class MainActivity extends AppCompatActivity {
         gameOverText.setText("Game Over");
         gameOverText.setTextColor(Color.parseColor("#FF0000"));
         gameOverText.setVisibility(View.INVISIBLE);
+        gameOverText.setTextSize(20
+        );
         final RelativeLayout.LayoutParams gameOverTextParams = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
@@ -53,13 +54,17 @@ public class MainActivity extends AppCompatActivity {
         mLayout.addView(gameOverText, gameOverTextParams);
 
         restartButton = new Button(mContext);
-        restartButton.setText("Try Again");
+        restartButton.setText("Start");
+        restartButton.setTextColor(Color.parseColor("#FFFFFF"));
+        restartButton.setBackgroundColor(Color.parseColor("#00000000"));
         restartButton.setVisibility(View.INVISIBLE);
         RelativeLayout.LayoutParams restartButtonParams = new RelativeLayout.LayoutParams(
                 RelativeLayout.LayoutParams.WRAP_CONTENT,
                 RelativeLayout.LayoutParams.WRAP_CONTENT
         );
-        restartButtonParams.setMargins(dp2px(8),dp2px(8),0,0);
+        restartButtonParams.setMargins(0,0,dp2px(8),dp2px(8));
+        restartButtonParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+        restartButtonParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         restartButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -68,8 +73,6 @@ public class MainActivity extends AppCompatActivity {
                 level = 1;
                 shipsTouched = 0;
                 levelText.setText("Level: " + level);
-                shipsTouchedText.setText("Ships Touched: " + shipsTouched);
-                clearSpace();
                 newLevel(level);
             }
         });
@@ -85,19 +88,6 @@ public class MainActivity extends AppCompatActivity {
         levelTextParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
         levelTextParams.setMargins(dp2px(8), 0, 0, dp2px(8));
         mLayout.addView(levelText, levelTextParams);
-
-        shipsTouchedText = new TextView(mContext);
-        shipsTouchedText.setText("Ships Touched: 0");
-        shipsTouchedText.setTextColor(Color.parseColor("#ffffff"));
-        RelativeLayout.LayoutParams shipsTouchedTextParams = new RelativeLayout.LayoutParams(
-                RelativeLayout.LayoutParams.WRAP_CONTENT,
-                RelativeLayout.LayoutParams.WRAP_CONTENT
-        );
-        shipsTouchedTextParams.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-        shipsTouchedTextParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-        shipsTouchedTextParams.setMargins(0,0,dp2px(8),dp2px(8));
-        mLayout.addView(shipsTouchedText,shipsTouchedTextParams);
-
 
         //
 
@@ -133,12 +123,10 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 newShip.setVisibility(View.INVISIBLE);
                 shipsTouched++;
-                shipsTouchedText.setText("Ships Touched: " + shipsTouched);
                 if (shipsTouched == level){
                     level++;
                     shipsTouched = 0;
                     levelText.setText("Level: " + level);
-                    shipsTouchedText.setText("Ships Touched: " + shipsTouched);
                     clearSpace();
                     newLevel(level);
                 }
@@ -169,6 +157,7 @@ public class MainActivity extends AppCompatActivity {
         newAlien.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                clearSpace();
                 gameOverText.setVisibility(View.VISIBLE);
                 restartButton.setVisibility(View.VISIBLE);
             }
